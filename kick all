@@ -1,0 +1,53 @@
+local isOpen = false  -- Переменная для состояния меню
+
+-- Создаем GUI
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Создаем фрейм для кнопки
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.2, 0, 0.2, 0)  -- Размер фрейма
+frame.Position = UDim2.new(0.8, 0, 0.4, 0)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.Visible = false  -- Скрываем фрейм изначально
+frame.Parent = gui
+
+-- Функция для открытия и закрытия меню
+local function toggleMenu()
+    isOpen = not isOpen  -- Меняем состояние
+    frame.Visible = isOpen  -- Устанавливаем видимость фрейма в зависимости от состояния
+end
+
+-- Создаем кнопку "Kick All"
+local kickButton = Instance.new("TextButton")
+kickButton.Text = "Kick All"  -- Устанавливаем текст кнопки
+kickButton.Size = UDim2.new(0.8, 0, 0.4, 0)  -- Уменьшенный размер кнопки (80% ширины фрейма и 40% высоты)
+kickButton.Position = UDim2.new(0.1, 0, 0.3, 0)  -- Центрируем кнопку внутри фрейма
+kickButton.BackgroundColor3 = Color3.new(1, 0, 0)  -- Красный цвет кнопки
+kickButton.TextColor3 = Color3.new(1, 1, 1)  -- Белый текст
+kickButton.Parent = frame
+
+-- Добавляем обработчик нажатия на кнопку "Kick All"
+kickButton.MouseButton1Click:Connect(function()
+    for i, v in ipairs(game:GetService("Players"):GetChildren()) do
+        if v == game:GetService("Players").LocalPlayer then continue end
+        local args = {
+            [1] = tostring(v.Name)
+        }
+        
+        -- Отправляем запрос на серверное событие для кика игрока
+        game:GetService("ReplicatedStorage").KickObservedPlayerEvent:FireServer(unpack(args))
+    end
+    print("Все игроки, кроме локального, были кикнуты!")  -- Вывод сообщения
+end)
+
+-- Создаем кнопку для открытия/закрытия меню
+local toggleButton = Instance.new("TextButton")
+toggleButton.Text = "Открыть/Закрыть меню"
+toggleButton.Size = UDim2.new(0.2, 0, 0.1, 0)
+toggleButton.Position = UDim2.new(0.8, 0, 0, 0)
+toggleButton.BackgroundColor3 = Color3.new(0, 1, 0)  -- Зеленый цвет кнопки
+toggleButton.Parent = gui
+
+-- Добавляем обработчик нажатия на кнопку открытия/закрытия меню
+toggleButton.MouseButton1Click:Connect(toggleMenu)
