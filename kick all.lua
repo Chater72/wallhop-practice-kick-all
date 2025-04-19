@@ -28,7 +28,7 @@ local MainButton = Instance.new("TextButton")
 MainButton.Size = UDim2.new(0.5, 0, 0.4, 0)
 MainButton.Position = UDim2.new(0.25, 0, 0.3, 0)
 MainButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
-MainButton.Text = "Kick all"
+MainButton.Text = "Kick all!"
 MainButton.TextScaled = true
 MainButton.Parent = Frame
 
